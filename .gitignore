@@ -1,0 +1,45 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.Python
+env/
+venv/
+ENV/
+build/
+dist/
+.eggs/
+*.egg-info/
+.installed.cfg
+lib/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.coverage
+.tox/
+.pytest_cache/
+
+# IDEs
+.vscode/
+.idea/
+*.iml
+
+# Java
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Maven
+.settings/
+.mvn/
+
+# others
+.DS_Store
