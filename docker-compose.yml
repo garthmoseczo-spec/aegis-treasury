@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  webhook:
+    build: ./src/webhook
+    env_file: .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src/webhook:/app
+
+  license-service:
+    build: ./src/licensing
+    env_file: .env
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./src/licensing:/app
