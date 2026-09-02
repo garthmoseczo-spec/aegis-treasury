@@ -19,4 +19,3 @@ def sign_payload(payload: str) -> str:
 def verify_payload_signature(payload: str, signature: str) -> bool:
     expected = sign_payload(payload)
     return hmac.compare_digest(expected, signature)
-

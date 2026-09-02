@@ -12,7 +12,9 @@ def _sqlite_path_from_url(database_url: str) -> str:
     parsed = urlparse(database_url)
     if parsed.scheme == "sqlite":
         return parsed.path.lstrip("/")
-    raise ValueError("Only sqlite URLs are supported by the default backend core")
+    raise ValueError(
+        "Only sqlite URLs are supported by the default backend core"
+    )
 
 
 def get_sqlite_connection() -> sqlite3.Connection:
@@ -20,4 +22,3 @@ def get_sqlite_connection() -> sqlite3.Connection:
     connection = sqlite3.connect(path, check_same_thread=False)
     connection.row_factory = sqlite3.Row
     return connection
-

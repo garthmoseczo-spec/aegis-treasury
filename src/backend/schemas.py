@@ -69,4 +69,3 @@ class SignatureRequest(BaseModel):
 class SignatureResponse(BaseModel):
     signature: str
     algorithm: str
-

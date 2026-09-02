@@ -1,7 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException
 
 from backend.auth import get_current_principal
-from backend.schemas import Principal, TransactionCreateRequest, TransactionResponse
+from backend.schemas import (
+    Principal,
+    TransactionCreateRequest,
+    TransactionResponse,
+)
 from backend.services.transaction_service import (
     approve_transaction,
     create_transaction,
@@ -14,7 +18,8 @@ router = APIRouter(prefix="/transactions", tags=["transactions"])
 
 @router.post("", response_model=TransactionResponse)
 def create_transaction_route(
-    request: TransactionCreateRequest, principal: Principal = Depends(get_current_principal)
+    request: TransactionCreateRequest,
+    principal: Principal = Depends(get_current_principal),
 ) -> TransactionResponse:
     tenant_id = request.tenant_id or principal.tenant_id or principal.sub
     transaction = create_transaction(
@@ -44,6 +49,8 @@ def approve_transaction_route(
         raise HTTPException(status_code=404, detail="Transaction not found")
     tenant_id = principal.tenant_id or principal.sub
     if transaction["tenant_id"] != tenant_id:
-        raise HTTPException(status_code=403, detail="Transaction does not belong to tenant")
+        raise HTTPException(
+            status_code=403,
+            detail="Transaction does not belong to tenant",
+        )
     return TransactionResponse(**transaction)
-

@@ -15,4 +15,3 @@ app.include_router(admin.router)
 @app.get("/health")
 def health() -> dict:
     return {"status": "ok", "environment": settings.environment}
-

@@ -12,7 +12,12 @@ _transaction_lock = Lock()
 _transactions: dict[str, Transaction] = {}
 
 
-def create_transaction(tenant_id: str, wallet_id: str, amount: float, asset: str) -> dict:
+def create_transaction(
+    tenant_id: str,
+    wallet_id: str,
+    amount: float,
+    asset: str,
+) -> dict:
     with _transaction_lock:
         transaction = Transaction(
             transaction_id=str(uuid4()),
@@ -27,7 +32,11 @@ def create_transaction(tenant_id: str, wallet_id: str, amount: float, asset: str
 
 def list_transactions(tenant_id: str) -> list[dict]:
     with _transaction_lock:
-        return [asdict(item) for item in _transactions.values() if item.tenant_id == tenant_id]
+        return [
+            asdict(item)
+            for item in _transactions.values()
+            if item.tenant_id == tenant_id
+        ]
 
 
 def approve_transaction(transaction_id: str) -> dict | None:
@@ -38,4 +47,3 @@ def approve_transaction(transaction_id: str) -> dict | None:
         transaction.status = "approved"
         transaction.approved_at = datetime.now(timezone.utc)
         return asdict(transaction)
-

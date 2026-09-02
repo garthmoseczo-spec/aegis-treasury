@@ -32,4 +32,3 @@ class Transaction:
     status: str = "pending"
     created_at: datetime = field(default_factory=utc_now)
     approved_at: datetime | None = None
-

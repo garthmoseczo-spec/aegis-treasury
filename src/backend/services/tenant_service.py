@@ -21,4 +21,3 @@ def create_tenant(name: str, plan_id: str) -> dict:
 def list_tenants() -> list[dict]:
     with _tenant_lock:
         return [asdict(item) for item in _tenants.values()]
-

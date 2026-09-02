@@ -17,4 +17,3 @@ def get_tenant_plan(tenant_id: str) -> dict | None:
         if plan_id is None:
             return None
         return {"tenant_id": tenant_id, "plan_id": plan_id}
-

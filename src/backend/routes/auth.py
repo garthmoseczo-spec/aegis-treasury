@@ -15,4 +15,3 @@ def issue_token(request: TokenRequest) -> TokenResponse:
         tenant_id=request.tenant_id,
     )
     return TokenResponse(access_token=token, expires_at=expires_at)
-

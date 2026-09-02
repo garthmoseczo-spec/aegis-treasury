@@ -16,7 +16,8 @@ class TenantPlanUpdateRequest(BaseModel):
 
 @router.post("/tenants", response_model=TenantResponse)
 def create_tenant_route(
-    request: TenantCreateRequest, principal: Principal = Depends(get_current_principal)
+    request: TenantCreateRequest,
+    principal: Principal = Depends(get_current_principal),
 ) -> TenantResponse:
     require_role(principal, "admin")
     tenant = create_tenant(name=request.name, plan_id=request.plan_id)
@@ -25,7 +26,9 @@ def create_tenant_route(
 
 
 @router.get("/tenants", response_model=list[TenantResponse])
-def list_tenants_route(principal: Principal = Depends(get_current_principal)) -> list[TenantResponse]:
+def list_tenants_route(
+    principal: Principal = Depends(get_current_principal),
+) -> list[TenantResponse]:
     require_role(principal, "admin")
     tenants = list_tenants()
     return [TenantResponse(**tenant) for tenant in tenants]
@@ -43,10 +46,12 @@ def update_plan_route(
 
 
 @router.get("/tenants/{tenant_id}/plan")
-def get_plan_route(tenant_id: str, principal: Principal = Depends(get_current_principal)) -> dict:
+def get_plan_route(
+    tenant_id: str,
+    principal: Principal = Depends(get_current_principal),
+) -> dict:
     require_role(principal, "admin")
     plan = get_tenant_plan(tenant_id)
     if plan is None:
         raise HTTPException(status_code=404, detail="Tenant plan not found")
     return plan
-
