@@ -1,10 +1,11 @@
 import hashlib
 import hmac
 
+from backend.algorithms import ensure_allowed_signature_algorithm
 from backend.config import settings
 
 
-SIGNATURE_ALGORITHM = "HMAC-SHA256"
+SIGNATURE_ALGORITHM = ensure_allowed_signature_algorithm("HMAC-SHA256")
 
 
 def sign_payload(payload: str) -> str:

@@ -45,6 +45,14 @@ Repository layout
 - /src/test/java/ # Java architecture tests
 - /tests/
 
+Backend capabilities now included
+- Git/GitHub secret posture endpoint (`/admin/secrets/status`) that reports configured required secret names without exposing values
+- Tiered SaaS plans with feature gating (`starter`, `growth`, `enterprise`)
+- Enterprise-only license issuance and validation endpoints
+- Isolated analytics engines per tenant and plan
+- Algorithm allow-list enforcement for token/signature algorithms
+- Zero-trust token controls (audience-bound JWTs, jti claims, revocation, cross-tenant denial for non-admins)
+
 Files added by the initializer
 - README.md (this file)
 - LICENSE (dual-license reference)

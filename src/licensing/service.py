@@ -1,30 +1,49 @@
-from datetime import datetime, timedelta
-import jwt
+from datetime import datetime, timedelta, timezone
 import os
 
-JWT_SIGNING_KEY = os.getenv("JWT_SIGNING_KEY", "replace_this_in_production")
-JWT_ALGORITHM = "HS256"  # For production, prefer RS256 with an asymmetric key
+import jwt
+
+from backend.algorithms import ensure_allowed_jwt_algorithm
 
 
-def issue_license(org_id: str, plan_id: str, ttl_days: int = 365, features: dict = None) -> str:
-    now = datetime.utcnow()
+JWT_SIGNING_KEY = os.getenv(
+    "AEGIS_LICENSE_SIGNING_KEY",
+    "replace_this_in_production",
+)
+JWT_ISSUER = os.getenv("AEGIS_LICENSE_ISSUER", "aegis-treasury")
+JWT_ALGORITHM = ensure_allowed_jwt_algorithm(
+    os.getenv("AEGIS_LICENSE_ALGORITHM", "HS256")
+)
+
+
+def issue_license(
+    org_id: str,
+    plan_id: str,
+    ttl_days: int = 365,
+    features: dict | None = None,
+) -> str:
+    now = datetime.now(timezone.utc)
     payload = {
-        "iss": "resqconnect-aegis",
+        "iss": JWT_ISSUER,
         "sub": org_id,
         "plan": plan_id,
         "iat": int(now.timestamp()),
         "exp": int((now + timedelta(days=ttl_days)).timestamp()),
-        "features": features or {}
+        "features": features or {},
     }
-    token = jwt.encode(payload, JWT_SIGNING_KEY, algorithm=JWT_ALGORITHM)
-    return token
+    return jwt.encode(payload, JWT_SIGNING_KEY, algorithm=JWT_ALGORITHM)
 
 
 def validate_license(token: str) -> dict:
     try:
-        payload = jwt.decode(token, JWT_SIGNING_KEY, algorithms=[JWT_ALGORITHM])
-        return {"valid": True, "payload": payload}
+        payload = jwt.decode(
+            token,
+            JWT_SIGNING_KEY,
+            algorithms=[JWT_ALGORITHM],
+            issuer=JWT_ISSUER,
+        )
     except jwt.ExpiredSignatureError:
         return {"valid": False, "reason": "expired"}
     except jwt.InvalidTokenError:
         return {"valid": False, "reason": "invalid"}
+    return {"valid": True, "payload": payload}

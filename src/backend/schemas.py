@@ -69,3 +69,41 @@ class SignatureRequest(BaseModel):
 class SignatureResponse(BaseModel):
     signature: str
     algorithm: str
+
+
+class TokenIntrospectionResponse(BaseModel):
+    active: bool
+    subject: str | None = None
+    role: str | None = None
+    tenant_id: str | None = None
+    jti: str | None = None
+
+
+class PlanResponse(BaseModel):
+    plan_id: str
+    features: list[str]
+    analytics_engines: list[str]
+
+
+class LicenseIssueResponse(BaseModel):
+    license_token: str
+    expires_at: datetime
+    tier: str
+
+
+class LicenseValidationRequest(BaseModel):
+    token: str = Field(min_length=1)
+
+
+class AnalyticsEventRequest(BaseModel):
+    engine: str = Field(min_length=1)
+    event_type: str = Field(min_length=1)
+    tenant_id: str | None = None
+
+
+class AnalyticsEventResponse(BaseModel):
+    event_id: str
+    tenant_id: str
+    engine: str
+    event_type: str
+    created_at: datetime
