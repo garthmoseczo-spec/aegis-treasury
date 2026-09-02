@@ -38,11 +38,11 @@ Quickstart
 
    mvn -B test
 
-Repository layout (examples)
-- /python/   # Python package(s)
-- /java/     # Java/Maven project
-- /docs/
-- /examples/
+Repository layout
+- /src/backend/   # FastAPI backend core (auth, wallets, transactions, keys, admin)
+- /src/licensing/ # License token utilities
+- /src/webhook/   # GitHub Marketplace webhook handler
+- /src/test/java/ # Java architecture tests
 - /tests/
 
 Files added by the initializer
@@ -59,9 +59,12 @@ Files added by the initializer
 - src/test/java/com/aegistreasury/ArchUnitTest.java (Java ArchUnit scaffold)
 
 Next steps
-- Push your existing code to this repo using the git commands above.
+- Start the backend API locally:
+
+  uvicorn src.backend.app:app --reload
+
 - Add credentials as GitHub repository secrets if you want automated publishing (PYPI_API_TOKEN, MAVEN_CENTRAL credentials, GITHUB_TOKEN is provided by Actions).
-- Update the CI workflow to match your project's build commands and paths.
+- Extend the in-memory backend services with persistent storage and full cryptography integrations.
 
 If you want I can:
 - Add a Releases workflow that builds and attaches artifacts on tag
